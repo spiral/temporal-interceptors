@@ -16,11 +16,13 @@ final class OpenTelemetryActivityInboundInterceptor implements ActivityInboundIn
 {
     use ActivityInboundInterceptorTrait, TracerContext;
 
+    private readonly TextMapPropagatorInterface $propagator;
+
     public function __construct(
         private readonly Tracer $tracer,
-        private readonly TextMapPropagatorInterface $propagator,
         private readonly DataConverterInterface $converter,
     ) {
+        $this->propagator = $tracer->getPropagator();
     }
 
     /**
@@ -32,8 +34,6 @@ final class OpenTelemetryActivityInboundInterceptor implements ActivityInboundIn
         if ($tracer === null) {
             return $next($input);
         }
-
-        $header = $this->setContext($input->header, $this->tracer->getContext());
 
         return $tracer->trace(
             name: 'temporal.activity.handle',

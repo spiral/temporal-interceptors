@@ -23,8 +23,6 @@ trait TracerContext
             $tracerData = $header->toHeader()->getFields()->offsetGet($this->getTracerHeader());
         }
 
-        dump($tracerData);
-
         if ($tracerData === null) {
             return $this->tracer;
         }

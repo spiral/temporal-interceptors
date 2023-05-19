@@ -102,4 +102,9 @@ final class Tracer
 
         return $this->lastSpan = $spanBuilder->startSpan();
     }
+
+    public function getPropagator(): TextMapPropagatorInterface
+    {
+        return $this->propagator;
+    }
 }

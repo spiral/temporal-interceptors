@@ -17,11 +17,13 @@ final class OpenTelemetryWorkflowClientCallsInterceptor implements WorkflowClien
 {
     use WorkflowClientCallsInterceptorTrait, TracerContext;
 
+    private readonly TextMapPropagatorInterface $propagator;
+
     public function __construct(
         private readonly Tracer $tracer,
-        private readonly TextMapPropagatorInterface $propagator,
         private readonly DataConverterInterface $converter,
     ) {
+        $this->propagator = $tracer->getPropagator();
     }
 
     /**
